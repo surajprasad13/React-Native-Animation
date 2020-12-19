@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Card,Button } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
 import Deck from "./screens/Deck";
 
 const DATA = [
@@ -27,9 +27,9 @@ const DATA = [
 ];
 
 class App extends Component {
-  renderCard(item) {
+  renderCard(item, index) {
     return (
-      <Card key={item.id} >
+      <Card key={item.id}>
         <Card.Image source={{ uri: item.uri }} />
         <Text>{item.text}</Text>
         <Button title="View More" type="outline" />
@@ -37,10 +37,19 @@ class App extends Component {
     );
   }
 
+  renderNoMoreCards() {
+    return (
+      <Card>
+        <Card.Title>All Done</Card.Title>
+        <Text>There is no more card</Text>
+      </Card>
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Deck data={DATA} renderCard={this.renderCard} />
+        <Deck data={DATA} renderCard={this.renderCard} renderNoMoreCards={this.renderNoMoreCards} />
       </View>
     );
   }
