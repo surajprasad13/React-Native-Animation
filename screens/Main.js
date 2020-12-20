@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card, Button } from "react-native-elements";
-import Deck from "./Deck";
+import DeckScreen from "./DeckScreen";
 
 const DATA = [
   {
@@ -49,7 +49,7 @@ class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Deck data={DATA} renderCard={this.renderCard} renderNoMoreCards={this.renderNoMoreCards} />
+        <DeckScreen data={DATA} renderCard={this.renderCard} renderNoMoreCards={this.renderNoMoreCards} />
       </View>
     );
   }

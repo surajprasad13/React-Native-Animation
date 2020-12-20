@@ -1,7 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import _ from "lodash";
+import React, { Component } from "react";
+import { AppLoading } from "expo";
 
 import Slides from "../components/Slides";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const SLIDE_DATA = [
   {
@@ -18,19 +20,30 @@ const SLIDE_DATA = [
   },
 ];
 
-const WelcomeScreen = ({ navigation }) => {
-  return (
-    <>
-      <Slides data={SLIDE_DATA} onComplete={() => navigation.navigate("Auth")} />
-    </>
-  );
-};
+class WelcomeScreen extends Component {
+  state = { token: null };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+  async componentDidMount() {
+    let token = await AsyncStorage.getItem("fb_token");
+    if (token) {
+      this.props.navigation.navigate("Main");
+      this.setState({ token });
+    } else {
+      this.setState({ token: false });
+    }
+  }
+
+  render() {
+    const {navigation}=this.props
+    // if (_.isNull(this.state.token)) {
+    //   return <AppLoading />;
+    // }
+    return (
+      <>
+        <Slides data={SLIDE_DATA} onComplete={() => navigation.navigate("Auth")} />
+      </>
+    );
+  }
+}
 
 export default WelcomeScreen;

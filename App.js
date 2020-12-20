@@ -1,13 +1,12 @@
-import Expo, { Notifications } from "expo";
+import { Notifications } from "expo";
 import React, { Component } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
 import registerForNotifications from "./services/push_notification";
-import store from "./store";
+import store from "./redux/store";
 import { Provider } from "react-redux";
 
-import Main from "./screens/Main";
 
 import Screens from "./navigation/Screen";
 
