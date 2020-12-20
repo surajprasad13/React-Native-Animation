@@ -1,63 +1,39 @@
+import Expo, { Notifications } from "expo";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Card, Button } from "react-native-elements";
-import Deck from "./screens/Deck";
+import { Alert, StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
-const DATA = [
-  {
-    id: 1,
-    text: "Card 1",
-    uri: "https://source.unsplash.com/400x400/?car",
-  },
-  {
-    id: 2,
-    text: "Card 2",
-    uri: "https://source.unsplash.com/400x400/?flower",
-  },
-  {
-    id: 3,
-    text: "Card 3",
-    uri: "https://source.unsplash.com/400x400/?animal",
-  },
-  {
-    id: 4,
-    text: "Card 4",
-    uri: "https://source.unsplash.com/400x400/?fruit",
-  },
-];
+import registerForNotifications from "./services/push_notification";
+import store from "./store";
+import { Provider } from "react-redux";
+
+import Main from "./screens/Main";
+
+import Screens from "./navigation/Screen";
 
 class App extends Component {
-  renderCard(item, index) {
-    return (
-      <Card key={item.id}>
-        <Card.Image source={{ uri: item.uri }} />
-        <Text>{item.text}</Text>
-        <Button title="View More" type="outline" />
-      </Card>
-    );
-  }
+  componentDidMount() {
+    registerForNotifications();
+    Notifications.addListener((notification) => {
+      const {
+        data: { text },
+        origin,
+      } = notification;
 
-  renderNoMoreCards() {
-    return (
-      <Card>
-        <Card.Title>All Done</Card.Title>
-        <Text>There is no more card</Text>
-      </Card>
-    );
+      if (origin === "received" && text) {
+        Alert.alert("New Push Notification", text, [{ text: "ÓK." }]);
+      }
+    });
   }
-
   render() {
     return (
-      <View style={styles.container}>
-        <Deck data={DATA} renderCard={this.renderCard} renderNoMoreCards={this.renderNoMoreCards} />
-      </View>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
+      </Provider>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
